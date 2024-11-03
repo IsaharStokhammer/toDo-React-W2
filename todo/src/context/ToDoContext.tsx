@@ -1,6 +1,13 @@
-import { createContext, FC, ReactNode, useContext, useEffect, useState } from "react";
-import { Todo } from "../types/types";
 import { v4 as uuid } from "uuid";
+import {
+  createContext,
+  FC,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { Todo } from "../types/types";
 
 interface TodoProviderProps {
   children: ReactNode;
@@ -9,8 +16,8 @@ interface TodoProviderProps {
 interface ContextProps {
   addTodo: (description: string) => void;
   getFromLocalStorage: () => Todo[];
-  updateTodo: (_id: string, todo: Todo) => void;
-  deleteTodo: (_id: string) => void;
+  updateTodo: (id: string, todo: Todo) => void;
+  deleteTodo: (id: string) => void;
 }
 
 const TodoContext = createContext<ContextProps>({
@@ -20,61 +27,49 @@ const TodoContext = createContext<ContextProps>({
   deleteTodo: () => {},
 });
 
-
 const TodoProvider: FC<TodoProviderProps> = ({ children }) => {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const [tods, settodos] = useState<Todo[]>([]);
 
   useEffect(() => {
-    if(localStorage.getItem("todos")){
-      const data = getFromLocalStorage();
-      setTodos(data)
-    }
-  }, [])
-  
-  useEffect(()=>{
-  
-    localStorage.setItem("todos", JSON.stringify(todos));
-
-  },[todos]
-
-)
+    const todosFromStorage = getFromLocalStorage();
+    settodos(todosFromStorage);
+  }, []);
 
   //CREATE
   const addTodo = (description: string) => {
     const newTodo: Todo = {
-      description: description,
       _id: uuid(),
+      description,
       completed: false,
     };
-
-    setTodos((prevTodos) =>[...prevTodos, newTodo]);
-      
+    const updatedTodos = [...tods, newTodo];
+    settodos(updatedTodos);
+    saveToLocalStorage(updatedTodos); // שמירה ישירה של כל הרשימה
   };
+
   //READ
-  const getFromLocalStorage = () => {
+  const getFromLocalStorage = (): Todo[] => {
     const data = localStorage.getItem("todos");
-    if (data) {
-      return JSON.parse(data);
-    } else {
-      return [];
-    }
-  };
-  //UPDATE
-  const updateTodo = (id: string |undefined, todo: Todo) => {
-    let newTodoList = [...todos];
-    newTodoList = newTodoList.map((t) => (t._id === id ? todo:t));
-    console.log(newTodoList);
-    
-    setTodos(newTodoList); 
-  };
-  //DELETE
-  const deleteTodo = (id: string | undefined) => {
-    let newTodoList = [...todos];
-    newTodoList.splice(newTodoList.findIndex((t) => t._id === id), 1);
-    // newTodoList.filter((t) => t._id !== id);
-    setTodos(newTodoList);
+    return data ? JSON.parse(data) : [];
   };
 
+  //UPDATE
+  const updateTodo = (id: string, updatedTodo: Todo) => {
+    const newToDoList = tods.map((t) => (t._id === id ? updatedTodo : t));
+    settodos(newToDoList);
+    saveToLocalStorage(newToDoList);
+  };
+
+  //DELETE
+  const deleteTodo = (id: string) => {
+    const newToDoList = tods.filter((t) => t._id !== id);
+    settodos(newToDoList);
+    saveToLocalStorage(newToDoList);
+  };
+
+  const saveToLocalStorage = (todos: Todo[]) => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  };
 
   return (
     <TodoContext.Provider
