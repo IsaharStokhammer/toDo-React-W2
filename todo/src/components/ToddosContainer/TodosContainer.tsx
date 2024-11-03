@@ -8,8 +8,6 @@ const TodosContainer = () => {
   const todos: Todo[] = getFromLocalStorage();
 
   useEffect(() => {
-    console.log(todos);
-
     return () => {};
   }, [todos]);
   return (
