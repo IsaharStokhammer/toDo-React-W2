@@ -28,11 +28,11 @@ const TodoContext = createContext<ContextProps>({
 });
 
 const TodoProvider: FC<TodoProviderProps> = ({ children }) => {
-  const [tods, settodos] = useState<Todo[]>([]);
+  const [tods, setTodos] = useState<Todo[]>([]);
 
   useEffect(() => {
     const todosFromStorage = getFromLocalStorage();
-    settodos(todosFromStorage);
+    setTodos(todosFromStorage);
   }, []);
 
   //CREATE
@@ -43,7 +43,7 @@ const TodoProvider: FC<TodoProviderProps> = ({ children }) => {
       completed: false,
     };
     const updatedTodos = [...tods, newTodo];
-    settodos(updatedTodos);
+    setTodos(updatedTodos);
     saveToLocalStorage(updatedTodos); // שמירה ישירה של כל הרשימה
   };
 
@@ -56,14 +56,14 @@ const TodoProvider: FC<TodoProviderProps> = ({ children }) => {
   //UPDATE
   const updateTodo = (id: string, updatedTodo: Todo) => {
     const newToDoList = tods.map((t) => (t._id === id ? updatedTodo : t));
-    settodos(newToDoList);
+    setTodos(newToDoList);
     saveToLocalStorage(newToDoList);
   };
 
   //DELETE
   const deleteTodo = (id: string) => {
     const newToDoList = tods.filter((t) => t._id !== id);
-    settodos(newToDoList);
+    setTodos(newToDoList);
     saveToLocalStorage(newToDoList);
   };
 

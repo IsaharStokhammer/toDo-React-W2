@@ -1,0 +1,28 @@
+.FormInput{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+    height: 15%;
+
+    background-color: rgba(46, 44, 48, 0.944);
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+    margin: 20px;
+}
+
+.FormInput Form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+
+    background-color: rgba(46, 44, 48, 0.944);
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+    margin: 20px;
+}

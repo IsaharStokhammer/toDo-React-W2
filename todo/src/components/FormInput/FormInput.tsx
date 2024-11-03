@@ -1,5 +1,6 @@
 import {FC} from "react";
 import { useGlobalTodo } from "../../context/ToDoContext";
+import "./FormInput.css";
 
 const FormInput: FC = () => {
   const { addTodo } = useGlobalTodo();
@@ -10,7 +11,7 @@ const FormInput: FC = () => {
     addTodo(e.target.elements.description.value);
   };
   return (
-    <div>
+    <div className="FormInput">
       <form className="Form" onSubmit={handleSubmit}>
         <input name="description" type="text" placeholder="input description of new Todo"/>
         <button type="submit">send</button>

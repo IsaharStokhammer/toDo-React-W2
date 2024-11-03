@@ -1,0 +1,18 @@
+.TodoCard{
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    align-items: center;
+    margin: 20px;
+
+    background-color: rgba(47, 35, 46, 0.944);
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+}
+
+.TodoCard :hover{
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    background-color:  rgba(26, 23, 26, 0.944);
+
+}
