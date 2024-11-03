@@ -20,9 +20,19 @@ const TodoContext = createContext<ContextProps>({
   deleteTodo: () => {},
 });
 
+
 const TodoProvider: FC<TodoProviderProps> = ({ children }) => {
   const [todos, setTodos] = useState<Todo[]>([]);
+
+  useEffect(() => {
+    if(localStorage.getItem("todos")){
+      const data = getFromLocalStorage();
+      setTodos(data)
+    }
+  }, [])
+  
   useEffect(()=>{
+  
     localStorage.setItem("todos", JSON.stringify(todos));
 
   },[todos]
@@ -37,10 +47,7 @@ const TodoProvider: FC<TodoProviderProps> = ({ children }) => {
       completed: false,
     };
 
-    setTodos((prevTodos) => {
-        const updatedTodos = [...prevTodos, newTodo];
-        return updatedTodos;
-      });
+    setTodos((prevTodos) =>[...prevTodos, newTodo]);
       
   };
   //READ
@@ -55,8 +62,10 @@ const TodoProvider: FC<TodoProviderProps> = ({ children }) => {
   //UPDATE
   const updateTodo = (id: string |undefined, todo: Todo) => {
     let newTodoList = [...todos];
-    newTodoList.map((t) => (t._id === id ? todo : t));
-    setTodos(newTodoList);
+    newTodoList = newTodoList.map((t) => (t._id === id ? todo:t));
+    console.log(newTodoList);
+    
+    setTodos(newTodoList); 
   };
   //DELETE
   const deleteTodo = (id: string | undefined) => {

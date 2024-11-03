@@ -13,8 +13,8 @@ const TodoCard: FC<TodoCardProps> = ({ todo }) => {
     return (
         <div>
             <h3>{description}</h3>
-            <button onClick={() => updateTodo(_id, { description, completed: !completed })}>{!completed ? "❌" : "🦕"}</button>
-            <button onClick={() => deleteTodo(_id)}>delete</button>
+            <button onClick={() => updateTodo(_id!, {_id, description, completed: !completed })}>{!completed ? "❌" : "🦕"}</button>
+            <button onClick={() => deleteTodo(_id!)}>delete</button>
         </div>
     )
 }
